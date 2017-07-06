@@ -35,6 +35,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
             int prefIndex = listPreference.findIndexOfValue(stringValue);
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
+                // should be simplified, can be directly call below method
+                // preference.setSummary(listPreference.getEntry());
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
