@@ -22,25 +22,36 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Manages a local database for weather data.
  */
-// TODO (11) Extend SQLiteOpenHelper from WeatherDbHelper
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "weather.db";
     public static final int DATABASE_VERSION = 1;
 
-    public WeatherDbHelper(Context context){
-        super(context);
+    public WeatherDbHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Create a table to hold weather data
+        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherContract.WeatherEntry.TABLE_NAME + " (" +
+                WeatherContract.WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                WeatherContract.WeatherEntry.COLUMN_DATE + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_WEATHER_ID + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_MIN_TEMP + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_MAX_TEMP + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_HUMIDITY + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_PRESSURE + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_WIND_SPEED + " TEXT NOT NULL, " +
+                WeatherContract.WeatherEntry.COLUMN_DEGREES + " TEXT NOT NULL" +
+                "); ";
 
+        db.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
-
-    //  TODO (15) Override onCreate and create the weather table from within it
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + WeatherContract.WeatherEntry.TABLE_NAME);
+        onCreate(db);
     }
 }
